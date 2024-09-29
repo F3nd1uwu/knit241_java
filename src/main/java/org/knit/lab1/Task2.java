@@ -22,16 +22,34 @@ package org.knit.lab1;
 public class Task2 {
     public void execute() {
 
-        String urlValue = "https://test.ru/test/1072/page.jsp?intParam=12345&doubleParam=3.14&textParameter=someText";
-
-        /* tips
-         * urlValue.split(":");
-         */
-
-        //todo create class SimpleUrl()
-        // SimpleUrl url= new SimpleUrl();
-        // url.setAddress(address);
-        // url.setProtocol(protocol)
-        // System.out.println(url);
+        String urlValue = "https://school.sgu.ru/course/view.php?id=29";
+        String protocol = urlValue.substring(0, urlValue.indexOf(':'));
+        String hostWithPath = urlValue.substring(urlValue.indexOf("://") + 3);
+        String host = hostWithPath.split("/")[0];
+        String domain = host.contains(".") ? host.substring(0, host.lastIndexOf(".")) : host;
+        String domainExtension = host.contains(".") ? host.substring(host.lastIndexOf(".") + 1) : "";
+        String pathWithQuery = hostWithPath.split("\\?", 2)[0];
+        String path = pathWithQuery.split("/", 2).length > 1 ? pathWithQuery.split("/", 2)[1] : "";
+        String fileName = "";
+        String fileExtension = "";
+        if (path.contains("/")) {
+            String[] pathParts = path.split("/");
+            String lastPart = pathParts[pathParts.length - 1];
+            if (lastPart.contains(".")) {
+                fileName = lastPart.substring(0, lastPart.lastIndexOf("."));
+                fileExtension = lastPart.substring(lastPart.lastIndexOf(".") + 1);
+            }
+            else {
+                fileName = lastPart;
+            }
+        }
+        SimpleUrl simpleUrl = new SimpleUrl();
+        simpleUrl.setProtocol(protocol);
+        simpleUrl.setAddress(host);
+        simpleUrl.setDomainZone(domainExtension);
+        simpleUrl.setSiteName(domain);
+        simpleUrl.setWebpageName(fileName);
+        simpleUrl.setWebPageExtention(fileExtension);
+        System.out.println(simpleUrl);
     }
 }
